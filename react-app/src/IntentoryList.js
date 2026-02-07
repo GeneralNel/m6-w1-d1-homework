@@ -14,7 +14,7 @@ class InventoryList extends Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
-        fetch('api/inventories')
+        fetch('/api/inventories')
             .then(response => response.json())
             .then(data => this.setState({ inventories: data, isLoading: false }));
     }
@@ -28,7 +28,7 @@ class InventoryList extends Component {
             }
         });
         console.log("Deleted inventory with id: " + id);
-        let updatedInventories = [...this.state.inventories].filter(i => i.id !== id);
+        let updatedInventories = [...this.state.inventories].filter(i => i._id !== id);
         this.setState({ inventories: updatedInventories });
     }
 
@@ -38,15 +38,15 @@ class InventoryList extends Component {
             return <p>Loading...</p>;
         }
         const inventoryList = inventories.map(inventory => {
-            return <tr key={inventory.id}>
+            return <tr key={inventory._id}>
                 <td style={{ whiteSpace: 'nowrap' }}>{inventory.prodname}</td>
                 <td>{inventory.qty}</td>
                 <td>{inventory.price}</td>
                 <td>{inventory.status}</td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/inventories/" + inventory.id}>Edit</Button>
-                        <Button size="sm" color="danger" onClick={() => this.removeInventory(inventory.id)}>Delete</Button>
+                        <Button className="m-1" size="sm" color="primary" tag={Link} to={"/inventories/" + inventory._id}>Edit</Button>
+                        <Button className="m-1" size="sm" color="danger" onClick={() => this.removeInventory(inventory._id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
             </tr>;
@@ -56,7 +56,7 @@ class InventoryList extends Component {
                 <AppNavbar />
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" tag={Link} to="/inventories/new">Add Inventory</Button>
+                        <Button className="m-2" color="success" tag={Link} to="/inventories/new">Add Inventory</Button>
                     </div>
                     <h3>Inventory List</h3>
                     <Table className="mt-4">

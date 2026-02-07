@@ -48,17 +48,17 @@ exports.inventories = (req, res) => {
 };
 
 exports.updateInventory = (req, res) => {
-    Inventory.findByIdAndUpdate(req.body.id, {
+    Inventory.findByIdAndUpdate(req.body._id, {
         prodname: req.body.prodname,
         qty: req.body.qty,
         price: req.body.price,
         status: req.body.status
-    }, { new: false })
+    }, { new: true })
         .select('-__v')
         .then(inventory => {
             if (!inventory) {
                 return res.status(404).send({
-                    message: "Error! Inventory not found with id " + req.params.id,
+                    message: "Error! Inventory not found with id " + req.body._id,
                     error: "Not found!"
                 });
             }
@@ -66,7 +66,7 @@ exports.updateInventory = (req, res) => {
         })
         .catch(err => {
             return res.status(500).json({
-                message: "Error! Cannot update inventory with id " + req.params.id,
+                message: "Error! Cannot update inventory with id " + req.body._id,
                 error: err.message
             });
         });
